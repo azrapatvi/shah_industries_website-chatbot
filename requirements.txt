@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic
+requests
+beautifulsoup4
+langchain
+langchain-core
+langchain-community
+langchain-classic
+langchain-groq
+langchain-text-splitters
+langchain-huggingface
+sentence-transformers
+faiss-cpu
