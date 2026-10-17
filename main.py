@@ -27,7 +27,13 @@ os.environ['LANGCHAIN_API_KEY']=os.getenv('LANGCHAIN_API_KEY')
 
 app=FastAPI()
 
-loader=WebBaseLoader('https://ratnagiri-scrap.netlify.app/')
+loader = WebBaseLoader([
+    "https://ratnagiri-scrap.netlify.app/",
+    "https://ratnagiri-scrap.netlify.app/about",
+    "https://ratnagiri-scrap.netlify.app/services",
+    "https://ratnagiri-scrap.netlify.app/faq",
+    "https://ratnagiri-scrap.netlify.app/contact_us"
+])
 data=loader.load()
 
 splitter=RecursiveCharacterTextSplitter(
@@ -46,16 +52,31 @@ llm=ChatGroq(model='openai/gpt-oss-120b')
 prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are a friendly chatbot for Shah Industries,a scrap business in Ratnagiri use the provided context for replying the users questions.
+        """You are a friendly and helpful chatbot for Shah Industries,
+        a scrap business in Ratnagiri.
 
         Rules:
         1. If the user says hi, hello, or greets you,
-           reply naturally and friendly.
-        2. Answer questions about the buisness using the
-           provided context.
-        3. If the answer is not available in the context,
-           say: "I am not trained on this information."
-        4. Do not invent any thing or any information regarding there industry.
+           reply naturally and politely.
+
+        2. Answer customer questions using the provided website context.
+
+        3. If the requested information is not mentioned on the website,
+           politely explain that the details are not available on the website
+           and suggest contacting the owner directly for more information.
+
+        4. Display the owner's contact details only if they are available
+           in the provided context. Include the owner's phone number,
+           email address, or other contact information when available.
+
+        5. If the owner's contact details are not available in the context,
+           do not invent them. Tell the customer to check the website's
+           Contact Us section for the owner's details.
+
+        6. Never make up prices, services, business details, or contact
+           information.
+
+        7. Keep your answers simple, polite, and customer-friendly.
 
         Context:
         {context}
@@ -64,6 +85,7 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder(variable_name="chat_history"),
     ("human", "{input}")
 ])
+
 
 document_chain=create_stuff_documents_chain(llm,prompt)
 
