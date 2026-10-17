@@ -35,8 +35,9 @@ splitter=RecursiveCharacterTextSplitter(
 )
 splitted_text=splitter.split_documents(data)
 
-embeddings=HuggingFaceEmbeddings(
-    model_name="all-MiniLM-L6-v2"
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    model_kwargs={"device": "cpu"}
 )
 vector_store=FAISS.from_documents(splitted_text,embedding=embeddings)
 retriever=vector_store.as_retriever()
@@ -46,16 +47,16 @@ llm=ChatGroq(model='openai/gpt-oss-120b')
 prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are a friendly chatbot for Warmer Bakes n Cakes use the provided context for replying the users questions.
+        """You are a friendly chatbot for Shah Industries,a scrap business in Ratnagiri use the provided context for replying the users questions.
 
         Rules:
         1. If the user says hi, hello, or greets you,
            reply naturally and friendly.
-        2. Answer questions about the bakery using the
+        2. Answer questions about the buisness using the
            provided context.
         3. If the answer is not available in the context,
            say: "I am not trained on this information."
-        4. Do not invent bakery information.
+        4. Do not invent any thing or any information regarding there industry.
 
         Context:
         {context}
