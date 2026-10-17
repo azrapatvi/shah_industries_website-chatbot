@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Form
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.prompts import ChatPromptTemplate
@@ -35,9 +35,8 @@ splitter=RecursiveCharacterTextSplitter(
 )
 splitted_text=splitter.split_documents(data)
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    model_kwargs={"device": "cpu"}
+embeddings = FastEmbedEmbeddings(
+    model_name="BAAI/bge-small-en-v1.5"
 )
 vector_store=FAISS.from_documents(splitted_text,embedding=embeddings)
 retriever=vector_store.as_retriever()
