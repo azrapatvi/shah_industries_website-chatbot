@@ -10,7 +10,8 @@ from langchain_classic.chains import create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_classic.chains import create_history_aware_retriever
 from langchain.messages import HumanMessage,AIMessage,SystemMessage
-
+import os
+from fastembed import FastEmbedEmbeddings
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -42,7 +43,8 @@ splitter=RecursiveCharacterTextSplitter(
 splitted_text=splitter.split_documents(data)
 
 embeddings = FastEmbedEmbeddings(
-    model_name="BAAI/bge-small-en-v1.5"
+    model_name="BAAI/bge-small-en-v1.5",
+    cache_dir="/tmp/fastembed"
 )
 vector_store=FAISS.from_documents(splitted_text,embedding=embeddings)
 retriever=vector_store.as_retriever()
