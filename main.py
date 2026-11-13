@@ -10,8 +10,7 @@ from langchain_classic.chains import create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_classic.chains import create_history_aware_retriever
 from langchain.messages import HumanMessage,AIMessage,SystemMessage
-import os
-from fastembed import FastEmbedEmbeddings
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
