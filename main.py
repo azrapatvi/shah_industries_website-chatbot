@@ -20,7 +20,12 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
+import os
+os.environ["HF_HOME"] = "/tmp/hf"
+os.environ["XDG_CACHE_HOME"] = "/tmp"
+os.environ["HF_HUB_CACHE"] = "/tmp/hf/hub"
+os.environ["HF_HUB_DISABLE_XET"] = "1"
+os.environ["USER_AGENT"] = "shah-industries-chatbot"
 os.environ['GROQ_API_KEY']=os.getenv('GROQ_API_KEY')
 os.environ['HF_TOKEN']=os.getenv('HF_TOKEN')
 os.environ['LANGCHAIN_API_KEY']=os.getenv('LANGCHAIN_API_KEY')
